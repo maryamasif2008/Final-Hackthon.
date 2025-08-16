@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Checkout</title>
+  <style>
+    body {
+      display: flex;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .left, .right {
+      padding: 20px;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    .left {
+      width: 60%;
+      background-color: #f5f5f5;
+      border-right: 1px solid #ccc;
+    }
+    .right {
+      width: 40%;
+      background-color: #fff;
+    }
+    .product-image {
+      max-width: 100%;
+      height: auto;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input, textarea, button {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="left" id="product-info">
+  <!-- Product details will be filled using JS -->
+</div>
+
+<div class="right">
+  <h2>Checkout Form</h2>
+  <form onsubmit="event.preventDefault(); alert('Order Placed!');">
+    <input type="text" name="name" placeholder="Full Name" required />
+    <input type="email" name="email" placeholder="Email Address" required />
+    <textarea name="address" placeholder="Shipping Address" required></textarea>
+    <button type="submit">Place Order</button>
+  </form>
+</div>
+
+<script>
+const products = [
+  {
+    id: 1,
+    name: "Silk Hijab",
+    price: 299,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5wl1iXFfgmsf6TYRB3uwmo7XVf7E3fJCqUjee5w5bXjcWBGDIfsTKrPqSryPx3QAFZpU&usqp=CAU",
+    rating: 4.5,
+    description: "Luxurious silk fabric offering elegance and comfort for everyday wear or special occasions."
+  },
+  {
+    id: 2,
+    name: "Sharm Pink Hijab",
+    price: 99,
+    image: "https://i0.wp.com/mlhijab.com/wp-content/uploads/2022/01/5A1EE86C-F9A6-484F-858B-5354CB0709D5.jpeg?fit=1536%2C2048&ssl=1",
+    rating: 4,
+    description: "Soft and graceful pink hijab perfect for casual or semi-formal outfits."
+  },
+  {
+    id: 3,
+    name: "Shefoon Hijab",
+    price: 49,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpyCQkW3CUkwe7wLocx_FpzOA_vAUK3ZsNnFBLQgWFKbUua6ujJX10EyaojANx4fvm_ro&usqp=CAU",
+    rating: 3.5,
+    description: "Lightweight chiffon hijab for a breathable and flowy style."
+  },
+  {
+    id: 4,
+    name: "Purple Hijab",
+    price: 59,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRecRrquEvNtMsCQX2L2fI1aNgY77LVeiSv-mVkZn7CpJPzuGm0FofRS5bRf6IfvVoofx4&usqp=CAU",
+    rating: 4.2,
+    description: "Vibrant purple shade with a soft texture to add color to your wardrobe."
+  },
+  {
+    id: 5,
+    name: "Luxury Hijab",
+    price: 99,
+    image: "https://hijabgallery.pk/cdn/shop/files/WhatsApp_Image_2025-06-11_at_01.54.15_6e1162e4.jpg?v=1750285448",
+    rating: 3,
+    description: "Premium fabric with a luxury finish for an upscale modest look."
+  },
+  {
+    id: 6,
+    name: "Silk Hijab",
+    price: 79,
+    image: "https://www.happyhijabis.com/cdn/shop/files/58898083-9EAD-4B49-910C-6A5AAB224F8E.jpg?v=1708536238&width=533",
+    rating: 4.7,
+    description: "Classic silk hijab with a smooth finish and rich feel."
+  },
+  {
+    id: 7,
+    name: "Primium Hijab",
+    price: 35,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZm2rym-l8LtHtFzpzOEYZc1sSluLztmLfHBFGwkRP4zaosgpDtlcoJMeToYDT2do5JTg&usqp=CAU",
+    rating: 4,
+    description: "Premium quality fabric for daily wear with long-lasting softness."
+  },
+  {
+    id: 8,
+    name: "Crinkle Hijab",
+    price: 120,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEant0p3LBDSIwwGIdFtzb01tLR0AsLSYQQq6TnUhnhCdMH779uGdExzPx6neVcgHfT_o&usqp=CAU",
+    rating: 4.3,
+    description: "Textured crinkle hijab that stays in place—no pins needed."
+  },
+  {
+    id: 9,
+    name: "Hijab Gift Box",
+    price: 199,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8c82hzCzxdsaM2W7t97EUTO9NJQyMguJKsCzpqv9BHJODBYMIVpeNjCi6-k5cwHM0gvo&usqp=CAU",
+    rating: 4,
+    description: "A curated box of beautiful hijabs, perfect for gifting loved ones."
+  },
+  {
+    id: 10,
+    name: "Light Pink Hijab",
+    price: 159,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUEcwk2ii2TqH1_H1bjiiYL2NUU9ucyDuVrbcHlDECHaahJVqfFfUvDGQ5p4W9d4vTBDk&usqp=CAU",
+    rating: 3.8,
+    description: "Chic and soft pink hijab for elegant daytime wear."
+  },
+  {
+    id: 11,
+    name: "Latest Hijab",
+    price: 899,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa9yFw0vMIyKEXFYb-UkUSVWfHPnM6N5QZAVv3qJaDVRSp0Z_PqXHqJEvglnKMAeNPdmU&usqp=CAU",
+    rating: 4.6,
+    description: "Trendy and modern hijab with a sleek design for fashion-forward modest wear."
+  },
+  {
+    id: 12,
+    name: "Sky Blue Hijab",
+    price: 499,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYvYQSUeBvHNNc2V9USRlGztaicytgJSfhGMROadMWC-uI5zFAPLZ-wRa8mTqGxgTsUYQ&usqp=CAU",
+    rating: 4.4,
+    description: "Soothing sky blue color, breathable fabric for all-day comfort."
+  },
+  {
+    id: 13,
+    name: "Sprinkle Hijab",
+    price: 19,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiKeNKKRvmYJsOg3CtX_GKixsifY-M5upHXq8jqPDWjolfabnM571svKFLNfQmgLeVV40&usqp=CAU",
+    rating: 3.7,
+    description: "Fun and playful design with subtle prints—perfect for teens or casual wear."
+  },
+  {
+    id: 14,
+    name: "Silk Hijab",
+    price: 10,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-xPhhS5-ozy75BOBQlprQDa3TodXPuWYxmUPr_AMS4HgxUWOPS0rtSO1bRzshJ36VuUw&usqp=CAU",
+    rating: 3.9,
+    description: "Affordable silk hijab offering comfort and shine for budget shoppers."
+  },
+  {
+    id: 15,
+    name: "Muna Satin Hijab",
+    price: 299,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6x8mXkRRB2ssh9m8kCylnwu7ijP5zZzuhpFAHVldCGYc5U59R5nOx70DIbxCF6xMC4CA&usqp=CAU",
+    rating: 4.1,
+    description: "Satin Muna collection offering silky finish with a rich feel."
+  },
+  {
+    id: 16,
+    name: "Dark Blue Hijab",
+    price: 229,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT38757B9TItN-jg0-1BGafCY48-ExyygTd0Y24UCuo9BSpHa5fHlWbNphLEY2qXNJGxEk&usqp=CAU",
+    rating: 4.2,
+    description: "Deep blue tone with versatile styling options for day or night."
+  },
+  {
+    id: 17,
+    name: "Textured Muna Hijab",
+    price: 39,
+    image: "https://images.meesho.com/images/products/357257191/yxhttps://images.meesho.com/images/products/357257191/yxir9_512.webp?width=512",
+    description: "Satin Muna collection offering silky finish with a rich feel."
+},
+  ];
+
+  const params = new URLSearchParams(window.location.search);
+  const productId = parseInt(params.get("id"));
+
+  const product = products.find(p => p.id === productId);
+
+ if (product) {
+  document.getElementById("product-info").innerHTML = `
+    <h2>${product.name}</h2>
+    <img src="${product.image}" alt="${product.name}" class="product-image"/>
+    <p><strong>Price:</strong> $${product.price}</p>
+    <p><strong>Description:</strong> ${product.desc}</p>
+  `;
+} else {
+    document.getElementById("product-info").innerHTML = `<p>Product not found.</p>`;
+  }
+</script>
+
+</body>
+</html>
